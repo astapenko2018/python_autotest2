@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
+from group import Group
 
 class TestTestaddgroup3():
     def setup_method(self, method):
@@ -20,24 +20,24 @@ class TestTestaddgroup3():
       self.driver.get("http://localhost/addressbook/")
       self.driver.set_window_size(1048, 1040)
 
-    def login(self):
+    def login(self, username, password):
       self.driver.find_element(By.NAME, "user").click()
-      self.driver.find_element(By.NAME, "user").send_keys("admin")
+      self.driver.find_element(By.NAME, "user").send_keys(username)
       self.driver.find_element(By.NAME, "pass").click()
-      self.driver.find_element(By.NAME, "pass").send_keys("secret")
+      self.driver.find_element(By.NAME, "pass").send_keys(password)
       self.driver.find_element(By.CSS_SELECTOR, "input:nth-child(7)").click()
 
     def open_groups_page(self):
       self.driver.find_element(By.LINK_TEXT, "groups").click()
       self.driver.find_element(By.NAME, "new").click()
 
-    def create_group(self):
+    def create_group(self, group):
       self.driver.find_element(By.NAME, "group_name").click()
-      self.driver.find_element(By.NAME, "group_name").send_keys("tele")
+      self.driver.find_element(By.NAME, "group_name").send_keys(group.name)
       self.driver.find_element(By.NAME, "group_header").click()
-      self.driver.find_element(By.NAME, "group_header").send_keys("mnb")
+      self.driver.find_element(By.NAME, "group_header").send_keys(group.header)
       self.driver.find_element(By.NAME, "group_footer").click()
-      self.driver.find_element(By.NAME, "group_footer").send_keys("ertio")
+      self.driver.find_element(By.NAME, "group_footer").send_keys(group.footer)
       self.driver.find_element(By.NAME, "submit").click()
 
 
@@ -50,9 +50,17 @@ class TestTestaddgroup3():
 
     def test_testaddgroup3(self):
         self.open_home_page()
-        self.login()
+        self.login(username="admin", password="secret")
         self.open_groups_page()
-        self.create_group()
+        self.create_group(Group(name="tele", header="mnb", footer="ertio"))
+        self.return_groups()
+        self.logout()
+
+    def test_testaddgroup3_2(self):
+        self.open_home_page()
+        self.login(username="admin", password="secret")
+        self.open_groups_page()
+        self.create_group(Group(name="", header="", footer=""))
         self.return_groups()
         self.logout()
 
