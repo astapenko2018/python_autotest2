@@ -21,3 +21,4 @@ def test_testaddgroup3_2(app):
     app.create_group(Group(name="", header="", footer=""))
     app.logout()
 
+
